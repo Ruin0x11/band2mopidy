@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/band2mopidy"
+
+gnoosic = Band2Mopidy::Gnoosic.new
+
+pp gnoosic.submit_faves("Terry Riley", "The Band Apart", "Susquatch")
+pp gnoosic.submit_response(:like)
+pp gnoosic.submit_response(:do_not_know)
+pp gnoosic.submit_response(:do_not_like)
+# pp gnoosic.submit_response(:like)
+# pp gnoosic.submit_response(:like)
+
+pp gnoosic
+
+user_token = ""
+discogs = Band2Mopidy::Discogs.new("band2mopidy", user_token)
+
+gnoosic.found_artists.each do |artist_name|
+  pp artist_name
+  pp discogs.search_artists(artist_name)
+end
