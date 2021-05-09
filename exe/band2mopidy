@@ -15,8 +15,23 @@ pp gnoosic
 
 user_token = ""
 discogs = Band2Mopidy::Discogs.new("band2mopidy", user_token)
+bc = Band2Mopidy::Bandcamp.new
+mpd = Band2Mopidy::MPD.new("ume", 6600)
 
 gnoosic.found_artists.each do |artist_name|
   pp artist_name
-  pp discogs.search_artists(artist_name)
+  result = {
+    discogs: discogs.search_artists(artist_name),
+    bandcamp: bc.search_artists(artist_name)
+  }
+  pp result
+
+  result[:discogs].each do |result|
+    result[:video_ids].each { |id| mpd.send_youtube(id) }
+  end
+  result[:bandcamp].each do |entry|
+    if entry[:type] == :album and entry[:subhead].match?(/^by #{artist_name}/i)
+      # mpd.send_bandcamp(entry[:url])
+    end
+  end
 end

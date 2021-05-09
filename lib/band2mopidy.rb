@@ -8,3 +8,5 @@ end
 
 require_relative "band2mopidy/gnoosic"
 require_relative "band2mopidy/discogs"
+require_relative "band2mopidy/bandcamp"
+require_relative "band2mopidy/mpd"
